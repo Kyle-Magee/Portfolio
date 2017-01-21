@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <p>
+            <i class="glyphicon glyphicon-user"></i> {{ user_info.name }}<br/><br/>
+            <i class="glyphicon glyphicon-map-marker"></i> {{ user_info.location }}<br/><br/>
+            <i class="glyphicon glyphicon-envelope"></i> {{ user_info.email }}<br/><br/>
+            <hr>
+            {% for i in roles %}
+            <i class="glyphicon glyphicon-tag"></i> {{ i.description }}<br/>
+            <br/>
+            {% endfor %}
+        </p>
+    </div>
+</div>
+{% endblock content %}

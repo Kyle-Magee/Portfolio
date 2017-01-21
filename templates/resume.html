@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <h5>Education:</h5>
+        <p>School: {{ education.school }}<br/>
+            Major: {{ education.major }}<br/>
+            GPA: {{ education.gpa }}<br/>
+            Graduation: {{ education.graduation }}<br/>
+            <hr>
+        <h5>Jobs:</h5>
+            {% for i in job %}
+            Company: {{ i.company }}<br/>
+            Job Title: {{ i.title }}<br/>
+            Employment Dates: {{ i.start_date}}
+            {% if i.end_date %}
+            to {{ i.end_date }}
+            {% endif %}<br/>
+            Description: {{ i.description }}<br/>
+            {% endfor %}
+        </p>
+    </div>
+</div>
+{% endblock content %}

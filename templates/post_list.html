@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+{% for i in posts %}
+    <p> <h4>{{ i.title }}</h4>
+        <i class="glyphicon glyphicon-bullhorn"></i> {{ i.content }}<br/><br/>
+        <i class="glyphicon glyphicon-thumbs-up"></i> {{ i.upsides}}<br/><br/>
+        <i class="glyphicon glyphicon-thumbs-down"></i> {{ i.downsides }}<br/><br/>
+        <a href="{{ i.link }}">Github</a>
+        {% if i.live_link %}
+        <br/>
+        <a href="{{ i.live_link }}">Try</a>
+        {% endif %}
+    </p>
+        <br/>
+        <hr>
+{% endfor %}
+    </div>
+</div>
+{% endblock content %}

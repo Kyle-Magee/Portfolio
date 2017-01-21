@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <p class="text-center">{{ post.title }}<br/>
+            {{ post.summary }}<br/>
+            <b>Upsides</b><br/>
+            {{ post.upsides }}
+            <b>Downsides</b><br/>
+            {{ post.downsides }}</br>
+            <a href="{{ post.link }}"><b>Github</b></a>
+        </p>
+        <p class="text-center"><a href="/projects">Back</a></p>
+    </div>
+</div>
+{% endblock content %}
