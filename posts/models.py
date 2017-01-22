@@ -9,8 +9,8 @@ class Post(models.Model):
     content = models.TextField(null=True)
     upsides = models.TextField(null=True)
     downsides = models.TextField(null=True)
-    link = models.CharField(max_length=500, null=True)
-    live_link = models.CharField(max_length=500, null=True)
+    link = models.CharField(max_length=500, null=True, blank=True)
+    live_link = models.CharField(max_length=500, null=True, blank=True)
     created_date = models.DateTimeField(default=timezone.now())
 
     def publish(self):
