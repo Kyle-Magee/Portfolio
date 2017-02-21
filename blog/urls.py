@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^projects/', include('posts.urls'), name='posts'),
     url(r'^resume/', include('resume.urls')),
-    url(r'^', include('about.urls'), name='about')
+    url(r'^', include('about.urls'), name='about'),
+    url(r'^gsm/', include('gsm.urls'), name='gsm'),
 ]
