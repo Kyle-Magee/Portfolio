@@ -14,7 +14,7 @@ def save_template_to_disk(f):
 def homepage(request):
     if request.method == 'POST':
         save_template_to_disk(request.FILES['template_file'])
-        build_output.build_output(filename='doc.xlsx', template_file='doc.xlsx', startdate='09/10/17', folder='media')
+        build_output.build_output(filename='doc.xlsx', template_file='media/doc.xlsx', startdate='09/10/17', folder='media')
         return serve(request, document_root='', path='002.xlsx')
     else:
         form = TemplateForm()

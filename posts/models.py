@@ -20,5 +20,6 @@ class Post(models.Model):
     def get_absolute_url(self):
         return self.id
 
+    # Create your models here.
     def __str__(self):
         return self.title
