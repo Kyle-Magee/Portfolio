@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <form action="" class="form-inline" method="post">
+            {% csrf_token %}
+
+            <p class="text-center"> {{ form.email.label }}:<br>{{ form.email }}</p>
+            <p class="text-center"> {{form.password.label }}:<br>{{ form.password }}</p>
+            <p class="text-center"><input class="btn btn-primary" type="submit" value="Login"></p>
+        </form>
+    </div>
+</div>
+{% endblock %}

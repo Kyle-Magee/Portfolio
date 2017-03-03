@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^resume/', include('resume.urls')),
     url(r'^', include('about.urls'), name='about'),
     url(r'^gsm/', include('gsm.urls'), name='gsm'),
+    url(r'^tracker/', include('tracker.urls'), name='tracker')
 ]
