@@ -5,7 +5,7 @@ from .models import Education, Job
 
 
 def view_resume(request):
-    job = Job.objects.all()
+    job = Job.objects.all().order_by('-start_date')
     education = Education.objects.all()[0]
     context = {
         'education': education,
