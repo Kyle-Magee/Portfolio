@@ -19,9 +19,8 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^projects/', include('posts.urls'), name='posts'),
     url(r'^resume/', include('resume.urls')),
-    url(r'^', include('about.urls'), name='about'),
+    url(r'^',  include('posts.urls'), name='posts'),
     url(r'^gsm/', include('gsm.urls'), name='gsm'),
     url(r'^tracker/', include('tracker.urls'), name='tracker'),
     url(r'mathsuccesscenter/', include('mathsuccesscenter.urls'), name='mathsuccesscenter'),
