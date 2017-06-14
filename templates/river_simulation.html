@@ -1,0 +1,15 @@
+<html>
+<head>
+<script src='/static/brython.js'></script>
+<script type='text/javascript' src='/static/brython_stdlib.js'></script>
+</head>
+<body onload='brython()'></script>
+    <script type='text/python' src='/static/visualize_river.py'></script>
+    <canvas id='simBoard' width='800' height='800'></canvas>
+    <form action='' id='sim_parameters'>
+        Number of Bears: <input type='number' id='bearcount' placeholder='4'><br>
+        Number of Fishes: <input type='number' id='fishcount' placeholder='6'>
+    </form>
+     <button type='submit' id='update'>Start</button>
+</body>
+</html>
