@@ -8,6 +8,8 @@ settings.py
 doc\.txt
 
 doc\.xlsx
+/static/brython
+/static/brython*
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
