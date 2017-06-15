@@ -24,7 +24,7 @@ class Animal:
         self._gender = choice(['Male', 'Female'])
         self._able_to_reproduce = True
         self._reproduction_timer = 0
-        self._reproduction_timer_max = 250
+        self._reproduction_timer_max = 5
 
     def get_direction(self):
         """ Decide in what direction, if any the animal will move in """

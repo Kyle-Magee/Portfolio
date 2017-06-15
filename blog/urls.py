@@ -25,8 +25,6 @@ urlpatterns = [
     url(r'^tracker/', include('tracker.urls'), name='tracker'),
     url(r'mathsuccesscenter/', include('mathsuccesscenter.urls'),
         name='mathsuccesscenter'),
-    url(r'incidentreport/', include('incidentreport.urls'),
-        name='incidentreport'),
     url(r'river_simulation/', include('river_simulation.urls'),
         name='river_simulation'),
 ]
