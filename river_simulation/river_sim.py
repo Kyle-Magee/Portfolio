@@ -3,28 +3,39 @@ from random import choice, random
 
 class Animal:
 
-    def __init__(self, ecosystem, prey, predators, species, birth_position=None):
+    def __init__(self, ecosystem, prey, predators, species,
+                 birth_position=None, gender=choice(['Male', 'Female']),
+                 able_to_reproduce=True, reproduction_timer=0,
+                 reproduction_timer_max=5, strength=random()):
         """
-        ecosystem   environment which animal lives in (list)
-        prey        animals that are on the menu (list)
-        predators   animals that try to eat thine (list)
-        species     the species the animal belongs to (str)
+        ecosystem               environment which animal lives in (list)
+        prey                    animals that are on the menu (list)
+        predators               animals that try to eat thine (list)
+        species                 the species the animal belongs to (str)
+        gender                  gender of the particular animal (str)
+        birth_position          index of the animal in the ecosystem (int)
+        able_to_reproduce       animal's ability to produce new animals (bool)
+        reproduction_timer      starting number for reproduction cooldown (int)
+        reproduction_timer_max  reproduction cooldown time (int
+        strength                animal's ability to fight (float)
         """
         self._eco = ecosystem
         self._prey = prey
         self._predators = predators
         self._species = species
-        available_spaces = [position for position, animal in enumerate(self._eco) if animal == None]
+        self._strength = strength
+        self._gender = gender
+        self._able_to_reproduce = able_to_reproduce
+        self._reproduction_timer = reproduction_timer
+        self._reproduction_timer_max = reproduction_timer_max
         if birth_position:
             self._eco[birth_position] = self
+        # Find empty locations in ecosystem
         else:
+            available_spaces = [position for position, animal in
+                                enumerate(self._eco) if not(animal)]
             self._eco[choice(available_spaces)] = self
         self._current_position = ecosystem.index(self)
-        self._strength = random()
-        self._gender = choice(['Male', 'Female'])
-        self._able_to_reproduce = True
-        self._reproduction_timer = 0
-        self._reproduction_timer_max = 5
 
     def get_direction(self):
         """ Decide in what direction, if any the animal will move in """
@@ -39,14 +50,20 @@ class Animal:
             destination = None
         else:
             destination = direction + current_pos
-        
         return destination
 
     def move(self, destination):
-        """ Animal moves to adjacent place in list, if moving past limit, allow reset"""
-
+        """
+            Animals move in accordance to the following behavior:
+            Randomly move left, right or nowhere
+            Animals of the same sex and species will fight for occupying a spot
+            the loser dies.
+            Predators will always kill prey
+            Animals of the same species and opposite sex will spawn a
+            new animal in a random available space
+        """
         ecosystem = self._eco
-        if destination == None:
+        if not(destination):
             return None
         if ecosystem[destination]:
             same_species_different_sex = (ecosystem[destination]._species == self._species and 
@@ -156,6 +173,12 @@ class Ecosystem:
         for animal in self._eco:
             if animal and animal._species == 'bear':
                 bears += 1
-            elif animal and animal._species == 'fish': 
+            elif animal and animal._species == 'fish':
                 fishes += 1
         return('Bears: ', bears, 'Fishes: ', fishes)
+
+
+if __name__ == '__main__':
+    e = Ecosystem(20)
+    eco = e.get_eco()
+    f = Fish(eco)
