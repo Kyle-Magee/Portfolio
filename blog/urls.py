@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,5 +27,5 @@ urlpatterns = [
     url(r'mathsuccesscenter/', include('mathsuccesscenter.urls'),
         name='mathsuccesscenter'),
     url(r'river_simulation/', include('river_simulation.urls'),
-        name='river_simulation'),
+        name='river_simulation')
 ]

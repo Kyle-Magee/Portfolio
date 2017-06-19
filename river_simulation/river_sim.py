@@ -33,9 +33,9 @@ class Animal:
         # Find empty locations in ecosystem
         else:
             available_spaces = [position for position, animal in
-                                enumerate(self._eco) if not(animal)]
+                                enumerate(self._eco.get_eco()) if not(animal)]
             self._eco[choice(available_spaces)] = self
-        self._current_position = ecosystem.index(self)
+        self._current_position = self._eco.get_eco().index(self)
 
     def get_direction(self):
         """ Decide in what direction, if any the animal will move in """
@@ -52,6 +52,20 @@ class Animal:
             destination = direction + current_pos
         return destination
 
+    def compare_gender(self, other):
+        return self._gender == other._gender
+
+    def compare_species(self, other):
+        return self._species == other._species
+
+    def move_to_spot(self, destination):
+        self._eco[self._current_position] = None
+        self._eco[destination] = self
+        self.update_current_position()
+
+    def death(self):
+        self._eco[self._current_position] = None
+
     def move(self, destination):
         """
             Animals move in accordance to the following behavior:
@@ -62,16 +76,14 @@ class Animal:
             Animals of the same species and opposite sex will spawn a
             new animal in a random available space
         """
-        ecosystem = self._eco
         if not(destination):
             return None
-        if ecosystem[destination]:
-            same_species_different_sex = (ecosystem[destination]._species == self._species and 
-                                          ecosystem[destination]._gender != self._gender)
-            same_species_same_sex = (ecosystem[destination]._species == self._species and
-                                     ecosystem[destination]._gender == self._gender)
-            prey_found = ecosystem[destination]._species in self._prey
-            oh_fuck_its_a_predator = ecosystem[destination]._species in self._predators
+        other = self._eco[destination]
+        if other:
+            same_species_different_sex = self.compare_species(other) and not(self.compare_gender(other))
+            same_species_same_sex = self.compare_species(other) and self.compare_gender(other)
+            prey_found = other._species in self._prey
+            oh_fuck_its_a_predator = other._species in self._predators
             theres_nothing_there = False
         else:
             prey_found = None
@@ -82,18 +94,14 @@ class Animal:
 
         current_pos = self._current_position
         if prey_found or theres_nothing_there:
-            ecosystem[current_pos] = None
-            ecosystem[destination] = self
-            self.update_current_position()
+            self.move_to_spot(destination)
         elif oh_fuck_its_a_predator:
-            ecosystem[current_pos] = None
+            self.death()
         elif same_species_same_sex:
-            if self.strength_check(ecosystem[destination]): 
-                ecosystem[current_pos] = None
-                ecosystem[destination] = self
-                self.update_current_position()
+            if self.strength_check(ecosystem[destination]):
+                self.move_to_spot()
             else:
-                ecosystem[current_pos] = None
+                self.death()
         elif same_species_different_sex:
             self.reproduce()
 
@@ -177,6 +185,19 @@ class Ecosystem:
                 fishes += 1
         return('Bears: ', bears, 'Fishes: ', fishes)
 
+    def __setitem__(self, animal, j):
+        """
+        Allow assingment of animals to ecosystem
+        j   index
+        """
+        self._eco[j] = animal
+
+    def __getitem__(self, animal, j):
+        """
+        Allow indexing of the ecosystem
+        j   index
+        """
+        return self._eco[j]
 
 if __name__ == '__main__':
     e = Ecosystem(20)

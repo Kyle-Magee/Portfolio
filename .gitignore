@@ -5,6 +5,8 @@ settings.py
 
 002\.xlsx
 
+admin/*
+static/admin/*
 doc\.txt
 
 doc\.xlsx
