@@ -39,7 +39,7 @@ def draw_rects(ecosystem):
 
 # SIMULATION PARAMETERS
 eco_class = Ecosystem(100)
-ecosystem = eco_class.get_eco()
+ecosystem = eco_class
 
 
 def change_parameters(env):
@@ -48,7 +48,7 @@ def change_parameters(env):
         Bear(ecosystem)
     for i in range(int(form.fishcount.value)):
         Fish(ecosystem)
-    timer.set_interval(run_simulation, 400)
+    timer.set_interval(run_simulation, 1000)
 
 
 def run_simulation():

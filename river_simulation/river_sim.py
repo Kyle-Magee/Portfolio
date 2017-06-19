@@ -4,7 +4,7 @@ from random import choice, random
 class Animal:
 
     def __init__(self, ecosystem, prey, predators, species,
-                 birth_position=None, gender=choice(['Male', 'Female']),
+                 birth_position=None,
                  able_to_reproduce=True, reproduction_timer=0,
                  reproduction_timer_max=5, strength=random()):
         """
@@ -24,10 +24,11 @@ class Animal:
         self._predators = predators
         self._species = species
         self._strength = strength
-        self._gender = gender
+        self._gender = choice(['Male', 'Female'])
         self._able_to_reproduce = able_to_reproduce
         self._reproduction_timer = reproduction_timer
         self._reproduction_timer_max = reproduction_timer_max
+        self._destination = None
         if birth_position:
             self._eco[birth_position] = self
         # Find empty locations in ecosystem
@@ -42,7 +43,7 @@ class Animal:
 
         direction = choice([-1, 1, 0, 0])
         current_pos = self._current_position
-        if direction + current_pos >= len(self._eco):
+        if direction + current_pos >= len(self._eco.get_eco()):
             destination = 0
         elif direction + current_pos < 0:
             destination = -1
@@ -50,6 +51,7 @@ class Animal:
             destination = None
         else:
             destination = direction + current_pos
+
         return destination
 
     def compare_gender(self, other):
@@ -98,8 +100,8 @@ class Animal:
         elif oh_fuck_its_a_predator:
             self.death()
         elif same_species_same_sex:
-            if self.strength_check(ecosystem[destination]):
-                self.move_to_spot()
+            if self.strength_check(other):
+                self.move_to_spot(destination)
             else:
                 self.death()
         elif same_species_different_sex:
@@ -123,7 +125,7 @@ class Animal:
             self.reproduction_off()
 
     def update_current_position(self):
-        self._current_position = self._eco.index(self)
+        self._current_position = self._eco.get_eco().index(self)
 
     def reproduction_check(self):
         return self._able_to_reproduce
@@ -173,7 +175,7 @@ class Ecosystem:
                 animal.move(animal.get_direction())
 
     def get_eco(self):
-        return self._eco
+        return list(self._eco)
 
     def headcount(self):
         bears = 0
@@ -185,21 +187,28 @@ class Ecosystem:
                 fishes += 1
         return('Bears: ', bears, 'Fishes: ', fishes)
 
-    def __setitem__(self, animal, j):
+    def __setitem__(self, j, animal):
         """
         Allow assingment of animals to ecosystem
         j   index
         """
         self._eco[j] = animal
 
-    def __getitem__(self, animal, j):
+    def __getitem__(self, j):
         """
         Allow indexing of the ecosystem
         j   index
         """
         return self._eco[j]
 
+
 if __name__ == '__main__':
-    e = Ecosystem(20)
-    eco = e.get_eco()
-    f = Fish(eco)
+    from time import sleep
+    e = Ecosystem(14)
+    for i in range(6):
+        Fish(e)
+        Bear(e)
+    while True:
+        sleep(1)
+        e.time_step()
+        print(e.get_eco())
