@@ -2,14 +2,29 @@
 <head>
 <script type='text/javascript' src='/static/brython.js'></script>
 <script type='text/javascript' src='/static/brython_stdlib.js'></script>
+<link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body onload='brython()'></script>
-    <script type='text/python' src='/static/visualize_river.py'></script>
-    <canvas id='simBoard' width='800' height='800'></canvas>
-    <form action='' id='sim_parameters'>
-        Number of Bears: <input type='number' id='bearcount' placeholder='4'><br>
-        Number of Fishes: <input type='number' id='fishcount' placeholder='6'>
-    </form>
-     <button type='submit' id='update'>Start</button>
+    <div class="col-sm-6">
+        <script type='text/python' src='/static/visualize_river.py'></script>
+        <canvas id='simBoard' width='800' height='800'></canvas>
+    </div>
+    <div class='col-xs-2'>
+        <p><code>
+            Write a program to simulate a river containing
+            bears and fish. In each time step, based on a random
+            process, each animal either attempts to move into an adjacent location
+            or stay where it is. If two animals of the same type and opposite gender collide, then
+            they create a new instance of that animal. If a bear and a fish collide, however, then the
+            fish dies.  Otherwise, if two animals of the same type and gender try to
+            collide, then only the one of larger strength survives.
+        </code></p>
+        <form action='' id='sim_parameters'>
+            Number of Bears: <input type='number' class='form-control' id='bearcount' placeholder='4'><br>
+            Number of Fishes: <input type='number' class='form-control' id='fishcount' placeholder='6'><br>
+        </form>
+        <button class='btn btn-default' type='submit' id='update'>Start</button>
+        <button class='btn btn-default' type='submit' id='reset'>Stop</button>
+    </div>
 </body>
 </html>

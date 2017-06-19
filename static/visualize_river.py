@@ -1,4 +1,4 @@
-from browser import document, timer
+from browser import document, timer, window
 from river_sim import Bear, Fish, Ecosystem
 
 # HTML BINDINGS
@@ -48,7 +48,7 @@ def change_parameters(env):
         Bear(ecosystem)
     for i in range(int(form.fishcount.value)):
         Fish(ecosystem)
-    timer.set_interval(run_simulation, 1000)
+    s = timer.set_interval(run_simulation, 1000)
 
 
 def run_simulation():
@@ -56,5 +56,17 @@ def run_simulation():
     draw_rects(ecosystem)
 
 
+def reset_everything(env):
+    for i in range(9999):
+        window.clearInterval(i)
+    global eco_class
+    eco_class = Ecosystem(100)
+    global ecosystem
+    ecosystem = eco_class
+
+
 btn = document['update']
 btn.bind('click', change_parameters)
+
+btn = document['reset']
+btn.bind('click', reset_everything)
