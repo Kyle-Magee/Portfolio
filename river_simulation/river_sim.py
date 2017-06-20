@@ -33,9 +33,9 @@ class Animal:
             self._eco[birth_position] = self
         # Find empty locations in ecosystem
         else:
-            available_spaces = [position for position, animal in
-                                enumerate(self._eco.get_eco()) if not(animal)]
-            self._eco[choice(available_spaces)] = self
+            empties = [position for position, animal in
+                       enumerate(self._eco.get_eco()) if not(animal)]
+            self._eco[choice(empties)] = self
         self._current_position = self._eco.get_eco().index(self)
 
     def get_direction(self):
@@ -54,11 +54,11 @@ class Animal:
 
         return destination
 
-    def compare_gender(self, other):
-        return self._gender == other._gender
+    def compare_gender(self, animal):
+        return self._gender == animal._gender
 
-    def compare_species(self, other):
-        return self._species == other._species
+    def compare_species(self, animal):
+        return self._species == animal._species
 
     def move_to_spot(self, destination):
         self._eco[self._current_position] = None
@@ -79,49 +79,46 @@ class Animal:
             new animal in a random available space
         """
         if not(destination):
+            # If the animal isn't going anywhere
             return None
-        other = self._eco[destination]
-        if other:
-            same_species_different_sex = self.compare_species(other) and not(self.compare_gender(other))
-            same_species_same_sex = self.compare_species(other) and self.compare_gender(other)
-            prey_found = other._species in self._prey
-            oh_fuck_its_a_predator = other._species in self._predators
-            theres_nothing_there = False
+        animal = self._eco[destination]
+        if isinstance(animal, Animal):
+            mate = (self.compare_species(animal) and
+                    not(self.compare_gender(animal)))
+            fight = self.compare_species(animal) and self.compare_gender(animal)
+            eat = isinstance(animal, self._prey)
+            die = isinstance(animal, self._predators)
+            nothing_found = False
         else:
-            prey_found = None
-            same_species_different_sex = None
-            oh_fuck_its_a_predator = None
-            same_species_same_sex = None
-            theres_nothing_there = True
+            eat = False
+            mate = False
+            die = False
+            fight = False
+            nothing_found = True
 
-        current_pos = self._current_position
-        if prey_found or theres_nothing_there:
+        if eat or nothing_found:
             self.move_to_spot(destination)
-        elif oh_fuck_its_a_predator:
+        elif die:
             self.death()
-        elif same_species_same_sex:
-            if self.strength_check(other):
+        elif fight:
+            if self.strength_check(animal):
                 self.move_to_spot(destination)
             else:
                 self.death()
-        elif same_species_different_sex:
+        elif mate:
             self.reproduce()
 
-    def strength_check(self, other):
-        return self._strength >= other._strength
+    def strength_check(self, animal):
+        return self._strength >= animal._strength
 
     def reproduce(self):
         """ Instantiante a new animal in a random, empty space; if any """
-
-        # Check for empty space
-        available_spaces = [position for position, animal in enumerate(self._eco) if animal == None]
-        if available_spaces and self.reproduction_check(): 
-            baby_destination = choice(available_spaces)
-            if self._species == 'bear': 
-                constructor = Bear
-            else: 
-                constructor = Fish
-            self._eco[baby_destination] = constructor(self._eco, birth_position=baby_destination)
+        # Check for empty space, loc = location
+        empties = [loc for loc, animal in enumerate(self._eco) if not(animal)]
+        if empties and self.reproduction_check():
+            birthplace = choice(empties)
+            animal = self._species
+            self._eco[birthplace] = animal(self._eco, birth_position=birthplace)
             self.reproduction_off()
 
     def update_current_position(self):
@@ -147,7 +144,7 @@ class Animal:
 class Bear(Animal):
 
     def __init__(self, eco, birth_position=None):
-        super().__init__(eco, ['fish'], ['Nothing'], 'bear', birth_position=None)
+        super().__init__(eco, Fish, type(None), Bear, birth_position=None)
 
     def __repr__(self):
         return str(self._gender)[0] + '.Bear'
@@ -156,7 +153,7 @@ class Bear(Animal):
 class Fish(Animal):
 
     def __init__(self, eco, birth_position=None):
-        super().__init__(eco, [0], ['bear'], 'fish', birth_position=None)
+        super().__init__(eco, type(None), Bear, Fish, birth_position=None)
 
     def __repr__(self):
         return str(self._gender)[0] + '.Fish'
